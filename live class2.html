@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .containter{
+           display: flex;
+            min-height: 400px;
+            padding: 5px;
+        }
+        #inputsection{
+           flex: 1;
+           display: flex;
+           flex-direction: column;
+            border: 1px solid #cecece;
+        }
+        #outputsection{
+          flex: 1;
+            border: 1px solid #cecece;
+        }
+        #textarea{
+            height: 80%;
+            width: 90%;
+            margin: 4% auto;
+        }
+        #traslatedtext{
+            font-size: medium;
+            font-weight: 600;
+        }
+        .trans{
+     
+            margin-top: -5%;
+            height: 14%;
+            background-color: #cecece;
+            font-weight: 600;
+            font-size: 25px;
+            color: blueviolet;
+            text-align: center;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="containter">
+        <div id="inputsection">
+            <button class="but" onclick="translatetext()" style="border: 1px solid blueviolet; background-color: blueviolet; height: 30px; border-radius: 20px;" >Translate</button>
+            
+            <textarea  id="textarea"></textarea>
+        </div>
+        <div id="outputsection">
+            <div class="trans">
+                <p style="position: relative; top: 22%; letter-spacing: 0cm;"> Translation </p>
+            </div>
+            <p style="margin-left: 1%;" id="traslatedtext"></p>
+        </div>
+    </div>
+</body>
+<script>
+    var url = `https://libretranslate.de/translate`;
+    async function translatetext()
+    {
+        try{
+            var input = document.getElementById("textarea").value;
+            var res = await fetch(url,{
+                method:"POST",
+                body: JSON.stringify({
+                    q: input,
+                    source:"en",
+                    target:"hi",
+                    format: "text",
+                }),
+                headers: {
+                    "content-Type" : "application/json",
+                },
+            });
+            var data = await res.json();
+            console.log(data)
+            displaydata(data.translatedText)
+        }
+        catch(err)
+        {
+            console.log(err)
+        }
+    }
+    function displaydata(data)
+    {
+        var traslatedtext = document.getElementById("traslatedtext")
+        traslatedtext.textContent = data
+    }
+</script>
+</html>
